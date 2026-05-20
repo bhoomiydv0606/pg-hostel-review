@@ -30,7 +30,15 @@ https://pg-hostel-review.web.app/
 ---
 
 ## 📸 Screenshots
-(Add your project screenshots here)
+
+### 🏠 Homepage
+![Homepage](home.png)
+
+### 📋 Listing Page
+![Listing](listing.png)
+
+### 🧑‍💼 Admin Dashboard
+![Admin](admin.png)dd your project screenshots here)
 
 ---
 
