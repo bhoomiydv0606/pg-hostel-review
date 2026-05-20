@@ -51,3 +51,5 @@ https://pg-hostel-review.web.app/
 
 ## 👩‍💻 Author
 Bhoomi Yadav
+
+⭐ If you like this project, give it a star!
