@@ -1,0 +1,105 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum Role {
+  USER
+  OWNER
+  ADMIN
+}
+
+model User {
+  id        String   @id @default(uuid())
+  email     String   @unique
+  password  String
+  role      Role     @default(USER)
+  name      String
+  phone     String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  listings  Listing[]
+  reviews   Review[]
+  bookings  Booking[]
+}
+
+model Listing {
+  id          String   @id @default(uuid())
+  title       String
+  description String
+  address     String
+  latitude    Float?
+  longitude   Float?
+  price       Float
+  ownerId     String
+  isActive    Boolean  @default(true)
+  amenities   String[]
+  images      String[]
+  avgRating   Float    @default(0.0)
+  reviewCount Int      @default(0)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  owner       User      @relation(fields: [ownerId], references: [id], onDelete: Cascade)
+  reviews     Review[]
+  bookings    Booking[]
+  rooms       Room[]
+}
+
+model Room {
+  id        String   @id @default(uuid())
+  listingId String
+  type      String   // e.g., 'SINGLE', 'DOUBLE'
+  capacity  Int
+  price     Float
+  beds      Bed[]
+
+  listing   Listing  @relation(fields: [listingId], references: [id], onDelete: Cascade)
+}
+
+model Bed {
+  id        String   @id @default(uuid())
+  roomId    String
+  isBooked  Boolean  @default(false)
+  
+  room      Room     @relation(fields: [roomId], references: [id], onDelete: Cascade)
+}
+
+model Review {
+  id        String   @id @default(uuid())
+  listingId String
+  userId    String
+  rating    Int
+  comment   String?
+  reply     String?  // Owner reply
+  createdAt DateTime @default(now())
+
+  listing   Listing  @relation(fields: [listingId], references: [id], onDelete: Cascade)
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([listingId, userId]) // one review per user per listing
+}
+
+model Booking {
+  id        String   @id @default(uuid())
+  listingId String
+  userId    String
+  bedIds    String[]
+  startDate DateTime
+  endDate   DateTime
+  total     Float
+  status    String   @default("PENDING") // PENDING, CONFIRMED, CANCELLED
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  listing   Listing  @relation(fields: [listingId], references: [id], onDelete: Cascade)
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}

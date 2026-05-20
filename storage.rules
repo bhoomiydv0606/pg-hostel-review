@@ -1,0 +1,30 @@
+rules_version = '2';
+
+// Firebase Storage Security Rules for PG Hostel Review
+service firebase.storage {
+  match /b/{bucket}/o {
+
+    function isAdmin() {
+      return request.auth != null && request.auth.token.email == 'bhoomi.yadav2825@gmail.com';
+    }
+
+    function isLoggedIn() {
+      return request.auth != null;
+    }
+
+    // Anyone can view uploaded PG and Review images
+    match /{allPaths=**} {
+      allow read: if true;
+    }
+
+    // PG cover images - only admin can upload
+    match /pg_images/{imageId} {
+      allow write: if isAdmin();
+    }
+
+    // Review proof images - logged in users can upload their own proofs
+    match /review_proofs/{imageId} {
+      allow write: if isLoggedIn() && request.resource.size < 6 * 1024 * 1024; // max 6MB
+    }
+  }
+}
