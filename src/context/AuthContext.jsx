@@ -1,7 +1,7 @@
 import { createContext, useContext, useEffect, useState } from 'react'
 import { auth, db } from '../firebase'
 import { onAuthStateChanged } from 'firebase/auth'
-import { doc, getDoc, updateDoc, setDoc, onSnapshot, serverTimestamp } from 'firebase/firestore'
+import { doc, updateDoc, setDoc, onSnapshot, serverTimestamp } from 'firebase/firestore'
 import { ADMIN_EMAIL } from '../constants'
 
 const AuthContext = createContext()

@@ -1,9 +1,9 @@
 import { useState, useEffect } from 'react'
-import { useNavigate, Link } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 import { auth, db } from '../firebase'
 import { useAuth } from '../context/AuthContext'
-import { 
-  doc, getDoc, collection, query, where, getDocs, orderBy, deleteDoc, updateDoc, setDoc 
+import {
+  doc, getDoc, collection, query, where, getDocs, deleteDoc, updateDoc
 } from 'firebase/firestore'
 import { updateProfile, EmailAuthProvider, reauthenticateWithCredential, updatePassword, signOut } from 'firebase/auth'
 import { uploadToCloudinary } from '../utils/cloudinary'

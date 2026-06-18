@@ -35,6 +35,17 @@
   <body>
     <div id="root"></div>
     <script type="module" src="/src/main.jsx"></script>
-    <script async defer src="https://maps.googleapis.com/maps/api/js?key=YOUR_GOOGLE_MAPS_API_KEY&libraries=places"></script>
+    <script>
+      // Load Google Maps only if API key is configured in .env.local
+      (function() {
+        var key = '%VITE_GOOGLE_MAPS_API_KEY%';
+        if (key && !key.includes('VITE_GOOGLE_MAPS')) {
+          var s = document.createElement('script');
+          s.src = 'https://maps.googleapis.com/maps/api/js?key=' + key + '&libraries=places';
+          s.async = true; s.defer = true;
+          document.head.appendChild(s);
+        }
+      })();
+    </script>
   </body>
 </html>
